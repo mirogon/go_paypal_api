@@ -37,9 +37,10 @@ type WebhookNotificationResourceAmount struct {
 type PaypalWebhookHandlerImpl struct {
 	PaypalClient           PaypalClient
 	PaypalWebhookValidator PaypalWebhookValidator
+	ApiBase                string
 }
 
-func CreatePapalWebhookHandler(paypalClient PaypalClient, validator PaypalWebhookValidator) PaypalWebhookHandlerImpl {
+func CreatePapalWebhookHandler(paypalClient PaypalClient, validator PaypalWebhookValidator, apiBase string) PaypalWebhookHandlerImpl {
 	return PaypalWebhookHandlerImpl{PaypalClient: paypalClient, PaypalWebhookValidator: validator}
 }
 
@@ -48,7 +49,7 @@ func (handler PaypalWebhookHandlerImpl) HandlePaypalWebhooks(responseWriter http
 	if err != nil {
 		return webhookNotification, err
 	}
-	isValid, err := handler.PaypalWebhookValidator.ValidateWebHook(validationData, webhookNotification.Id, http_.HttpRequestSenderImpl{}, "https://api-m.sandbox.paypal.com/v1/notifications/verify-webhook-signature", handler.PaypalClient.GetAccessToken())
+	isValid, err := handler.PaypalWebhookValidator.ValidateWebHook(validationData, webhookNotification.Id, http_.HttpRequestSenderImpl{}, handler.ApiBase+"/v1/notifications/verify-webhook-signature", handler.PaypalClient.GetAccessToken())
 	if !isValid {
 		return webhookNotification, errors.New("Invalid")
 	}

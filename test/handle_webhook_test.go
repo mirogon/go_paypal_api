@@ -24,7 +24,7 @@ func TestHandlePaypalWebhooks(t *testing.T) {
 
 	req := util.SetupTestRequest(nil, "123")
 
-	handler := paypal_api.CreatePapalWebhookHandler(paypalClientMock, paypalWebhookValidatorMock)
+	handler := paypal_api.CreatePapalWebhookHandler(paypalClientMock, paypalWebhookValidatorMock, "")
 	_, err := handler.HandlePaypalWebhooks(mockResponseWriter, req)
 	if err != nil {
 		t.Error()
@@ -42,7 +42,7 @@ func TestHandlePaypalWebhooks_GetWebhookDataError(t *testing.T) {
 
 	req := util.SetupTestRequest(nil, "123")
 
-	handler := paypal_api.CreatePapalWebhookHandler(paypalClientMock, paypalWebhookValidatorMock)
+	handler := paypal_api.CreatePapalWebhookHandler(paypalClientMock, paypalWebhookValidatorMock, "")
 	_, err := handler.HandlePaypalWebhooks(mockResponseWriter, req)
 	if err == nil {
 		t.Error()
@@ -62,7 +62,7 @@ func TestHandlePaypalWebhooks_ValidateWebhookErr(t *testing.T) {
 
 	req := util.SetupTestRequest(nil, "123")
 
-	handler := paypal_api.CreatePapalWebhookHandler(paypalClientMock, paypalWebhookValidatorMock)
+	handler := paypal_api.CreatePapalWebhookHandler(paypalClientMock, paypalWebhookValidatorMock, "")
 	_, err := handler.HandlePaypalWebhooks(mockResponseWriter, req)
 	if err == nil {
 		t.Error()
@@ -82,7 +82,7 @@ func TestHandlePaypalWebhooks_Invalid(t *testing.T) {
 
 	req := util.SetupTestRequest(nil, "123")
 
-	handler := paypal_api.CreatePapalWebhookHandler(paypalClientMock, paypalWebhookValidatorMock)
+	handler := paypal_api.CreatePapalWebhookHandler(paypalClientMock, paypalWebhookValidatorMock, "")
 	_, err := handler.HandlePaypalWebhooks(mockResponseWriter, req)
 	if err == nil {
 		t.Error()
