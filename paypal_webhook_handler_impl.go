@@ -41,7 +41,7 @@ type PaypalWebhookHandlerImpl struct {
 }
 
 func CreatePapalWebhookHandler(paypalClient PaypalClient, validator PaypalWebhookValidator, apiBase string) PaypalWebhookHandlerImpl {
-	return PaypalWebhookHandlerImpl{PaypalClient: paypalClient, PaypalWebhookValidator: validator}
+	return PaypalWebhookHandlerImpl{PaypalClient: paypalClient, PaypalWebhookValidator: validator, ApiBase: apiBase}
 }
 
 func (handler PaypalWebhookHandlerImpl) HandlePaypalWebhooks(responseWriter http_.HttpResponseWriter, req *http.Request) (WebhookNotification, error) {
