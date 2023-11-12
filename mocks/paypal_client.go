@@ -182,6 +182,20 @@ func (mr *MockPaypalClientMockRecorder) GetSubscriptionTransactions(subscription
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSubscriptionTransactions", reflect.TypeOf((*MockPaypalClient)(nil).GetSubscriptionTransactions), subscriptionId, startTime, endTime)
 }
 
+// IsSandbox mocks base method.
+func (m *MockPaypalClient) IsSandbox() bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "IsSandbox")
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// IsSandbox indicates an expected call of IsSandbox.
+func (mr *MockPaypalClientMockRecorder) IsSandbox() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IsSandbox", reflect.TypeOf((*MockPaypalClient)(nil).IsSandbox))
+}
+
 // ShowSubscriptionDetails mocks base method.
 func (m *MockPaypalClient) ShowSubscriptionDetails(subscriptionId string) (paypal_api_data.ShowSubscriptionDetailsResponse, error) {
 	m.ctrl.T.Helper()

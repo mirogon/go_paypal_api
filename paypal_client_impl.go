@@ -15,16 +15,22 @@ type PaypalClientImpl struct {
 	paypalClient *paypal.Client
 	AccessToken  string
 	ApiBase      string
+	isSandbox    bool
 }
 
-func CreatePaypalClient(clientId string, clientSecret string, apiBase string) (PaypalClientImpl, error) {
+func CreatePaypalClient(clientId string, clientSecret string, apiBase string, isSandbox bool) (PaypalClientImpl, error) {
 	paypalClient, err := paypal.NewClient(clientId, clientSecret, apiBase)
 	if err != nil {
 		return PaypalClientImpl{}, err
 	}
 	token, _ := paypalClient.GetAccessToken()
-	return PaypalClientImpl{paypalClient: paypalClient, AccessToken: token.Token, ApiBase: apiBase}, nil
+	return PaypalClientImpl{paypalClient: paypalClient, AccessToken: token.Token, ApiBase: apiBase, isSandbox: isSandbox}, nil
 }
+
+func (paypalClient PaypalClientImpl) IsSandbox() bool {
+	return paypalClient.isSandbox
+}
+
 func (paypalClient PaypalClientImpl) GetOrder(orderId string) (*paypal.Order, error) {
 	return paypalClient.paypalClient.GetOrder(orderId)
 }
