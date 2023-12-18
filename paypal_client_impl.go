@@ -35,13 +35,13 @@ func (paypalClient PaypalClientImpl) GetOrder(orderId string) (*paypal.Order, er
 	return paypalClient.paypalClient.GetOrder(orderId)
 }
 
-func (paypalClient PaypalClientImpl) CreateOrder(referenceId string, price string, buyerFirstName string, buyerLastName string, buyerEmail string) (*paypal.Order, error) {
+func (paypalClient PaypalClientImpl) CreateOrder(referenceId string, price string, buyerFirstName string, buyerLastName string, buyerEmail string, intent string) (*paypal.Order, error) {
 	purchaseUnitAmount := paypal.PurchaseUnitAmount{Currency: "EUR", Value: price}
 	purchaseUnits := []paypal.PurchaseUnitRequest{{ReferenceID: referenceId, Amount: &purchaseUnitAmount}}
 	payerName := paypal.CreateOrderPayerName{GivenName: buyerFirstName, Surname: buyerLastName}
 	payer := paypal.CreateOrderPayer{Name: &payerName, EmailAddress: buyerEmail}
 	appContext := paypal.ApplicationContext{BrandName: "PolterAi"}
-	order, err := paypalClient.paypalClient.CreateOrder("CAPTURE", purchaseUnits, &payer, &appContext)
+	order, err := paypalClient.paypalClient.CreateOrder(intent, purchaseUnits, &payer, &appContext)
 	return order, err
 }
 
