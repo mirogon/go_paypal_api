@@ -7,7 +7,7 @@ import (
 
 type PaypalClient interface {
 	IsSandbox() bool
-	CreateOrder(referenceId string, price string, buyerFirstName string, buyerLastName string, buyerEmail string, intent string) (*paypal.Order, error)
+	CreateOrder(referenceId string, price string, buyerFirstName string, buyerLastName string, buyerEmail string, intent string, brandName string, returnUrl string, cancelUrl string) (*paypal.Order, error)
 	GetOrder(orderId string) (*paypal.Order, error)
 	CaptureOrder(orderId string) (*paypal.CaptureOrderResponse, error)
 	GetAccessToken() string

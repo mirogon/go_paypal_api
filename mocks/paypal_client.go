@@ -94,18 +94,18 @@ func (mr *MockPaypalClientMockRecorder) CreateBillingPlan(productId, pricePerMon
 }
 
 // CreateOrder mocks base method.
-func (m *MockPaypalClient) CreateOrder(referenceId, price, buyerFirstName, buyerLastName, buyerEmail, intent string) (*paypal.Order, error) {
+func (m *MockPaypalClient) CreateOrder(referenceId, price, buyerFirstName, buyerLastName, buyerEmail, intent, brandName, returnUrl, cancelUrl string) (*paypal.Order, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateOrder", referenceId, price, buyerFirstName, buyerLastName, buyerEmail, intent)
+	ret := m.ctrl.Call(m, "CreateOrder", referenceId, price, buyerFirstName, buyerLastName, buyerEmail, intent, brandName, returnUrl, cancelUrl)
 	ret0, _ := ret[0].(*paypal.Order)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // CreateOrder indicates an expected call of CreateOrder.
-func (mr *MockPaypalClientMockRecorder) CreateOrder(referenceId, price, buyerFirstName, buyerLastName, buyerEmail, intent interface{}) *gomock.Call {
+func (mr *MockPaypalClientMockRecorder) CreateOrder(referenceId, price, buyerFirstName, buyerLastName, buyerEmail, intent, brandName, returnUrl, cancelUrl interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateOrder", reflect.TypeOf((*MockPaypalClient)(nil).CreateOrder), referenceId, price, buyerFirstName, buyerLastName, buyerEmail, intent)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateOrder", reflect.TypeOf((*MockPaypalClient)(nil).CreateOrder), referenceId, price, buyerFirstName, buyerLastName, buyerEmail, intent, brandName, returnUrl, cancelUrl)
 }
 
 // CreateProduct mocks base method.
