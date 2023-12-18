@@ -10,7 +10,15 @@ import (
 	http_ "github.com/mirogon/go_http"
 )
 
-type PaypalWebhookValidatorImpl struct{}
+type PaypalWebhookValidatorImpl struct {
+	PaypalWebhookId string
+}
+
+func CreatePaypalWebhookValidator(webhookId string) PaypalWebhookValidatorImpl {
+	return PaypalWebhookValidatorImpl{
+		PaypalWebhookId: webhookId,
+	}
+}
 
 func (validator PaypalWebhookValidatorImpl) ValidateWebHook(webHookValidationReq WebhookValidationRequest, webHookId string, requestSender http_.HttpRequestSender, paypalApiAddress string, token string) (bool, error) {
 	jsonValidationData, _ := json.Marshal(webHookValidationReq)
@@ -76,7 +84,7 @@ func (validator PaypalWebhookValidatorImpl) GetWebhookData(req *http.Request) (W
 		TransmissionSig:  paypalTransmissionSig,
 		TransmissionTime: paypalTransmissionTime,
 		CertUrl:          paypalCertUrl,
-		WebhookId:        "9N903389A2402460T",
+		WebhookId:        validator.PaypalWebhookId,
 		WebhookEvent:     jsonObject,
 	}, webHookEventData, nil
 }
