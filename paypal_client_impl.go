@@ -36,7 +36,7 @@ func (paypalClient PaypalClientImpl) GetOrder(orderId string) (*paypal.Order, er
 }
 
 func (paypalClient PaypalClientImpl) CreateOrder(referenceId string, price string, buyerFirstName string, buyerLastName string, buyerEmail string, intent string) (*paypal.Order, error) {
-	purchaseUnitAmount := paypal.PurchaseUnitAmount{Currency: "EUR", Value: price}
+	purchaseUnitAmount := paypal.PurchaseUnitAmount{Currency: "USD", Value: price}
 	purchaseUnits := []paypal.PurchaseUnitRequest{{ReferenceID: referenceId, Amount: &purchaseUnitAmount}}
 	payerName := paypal.CreateOrderPayerName{GivenName: buyerFirstName, Surname: buyerLastName}
 	payer := paypal.CreateOrderPayer{Name: &payerName, EmailAddress: buyerEmail}
