@@ -27,6 +27,7 @@ type WebhookNotificationResource struct {
 	Parent_Payment     string
 	Valid_Until        string
 	Links              []paypal_api_data.Link
+	Status             string
 }
 
 type WebhookNotificationResourceAmount struct {

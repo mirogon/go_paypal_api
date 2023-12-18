@@ -40,7 +40,7 @@ func (paypalClient PaypalClientImpl) CreateOrder(referenceId string, price strin
 	purchaseUnits := []paypal.PurchaseUnitRequest{{ReferenceID: referenceId, Amount: &purchaseUnitAmount}}
 	payerName := paypal.CreateOrderPayerName{GivenName: buyerFirstName, Surname: buyerLastName}
 	payer := paypal.CreateOrderPayer{Name: &payerName, EmailAddress: buyerEmail}
-	appContext := paypal.ApplicationContext{BrandName: "PolterAi", ReturnURL: "https://www.polterai.com", CancelURL: "https://www.polterai.com"}
+	appContext := paypal.ApplicationContext{UserAction: "PAY_NOW", BrandName: "PolterAi", ReturnURL: "https://www.polterai.com", CancelURL: "https://www.polterai.com"}
 	order, err := paypalClient.paypalClient.CreateOrder(intent, purchaseUnits, &payer, &appContext)
 	return order, err
 }
