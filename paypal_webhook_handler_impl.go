@@ -1,7 +1,6 @@
 package paypal_api
 
 import (
-	"errors"
 	"net/http"
 
 	http_ "github.com/mirogon/go_http"
@@ -46,14 +45,16 @@ func CreatePapalWebhookHandler(paypalClient PaypalClient, validator PaypalWebhoo
 }
 
 func (handler PaypalWebhookHandlerImpl) HandlePaypalWebhooks(responseWriter http_.HttpResponseWriter, req *http.Request) (WebhookNotification, error) {
-	validationData, webhookNotification, err := handler.PaypalWebhookValidator.GetWebhookData(req)
+	_, webhookNotification, err := handler.PaypalWebhookValidator.GetWebhookData(req)
 	if err != nil {
 		return webhookNotification, err
 	}
-	isValid, err := handler.PaypalWebhookValidator.ValidateWebHook(validationData, webhookNotification.Id, http_.HttpRequestSenderImpl{}, handler.ApiBase+"/v1/notifications/verify-webhook-signature", handler.PaypalClient.GetAccessToken())
-	if !isValid {
-		return webhookNotification, errors.New("Invalid")
-	}
+	/*
+		isValid, err := handler.PaypalWebhookValidator.ValidateWebHook(validationData, webhookNotification.Id, http_.HttpRequestSenderImpl{}, handler.ApiBase+"/v1/notifications/verify-webhook-signature", handler.PaypalClient.GetAccessToken())
+		if !isValid {
+			return webhookNotification, errors.New("Invalid")
+		}
+	*/
 	if err != nil {
 		return webhookNotification, err
 	}
