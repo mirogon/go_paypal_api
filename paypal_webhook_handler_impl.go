@@ -50,14 +50,14 @@ func (handler PaypalWebhookHandlerImpl) HandlePaypalWebhooks(responseWriter http
 		return webhookNotification, err
 	}
 	/*
-		isValid, err := handler.PaypalWebhookValidator.ValidateWebHook(validationData, webhookNotification.Id, http_.HttpRequestSenderImpl{}, handler.ApiBase+"/v1/notifications/verify-webhook-signature", handler.PaypalClient.GetAccessToken())
-		if !isValid {
-			return webhookNotification, errors.New("Invalid")
+			isValid, err := handler.PaypalWebhookValidator.ValidateWebHook(validationData, webhookNotification.Id, http_.HttpRequestSenderImpl{}, handler.ApiBase+"/v1/notifications/verify-webhook-signature", handler.PaypalClient.GetAccessToken())
+			if !isValid {
+				return webhookNotification, errors.New("Invalid")
+			}
+		if err != nil {
+			return webhookNotification, err
 		}
 	*/
-	if err != nil {
-		return webhookNotification, err
-	}
 	responseWriter.Send()
 	return webhookNotification, nil
 }

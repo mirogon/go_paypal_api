@@ -2,6 +2,7 @@ package paypal_api
 
 import (
 	"encoding/json"
+	"io"
 	"log"
 	"net/http"
 	"strings"
@@ -201,9 +202,7 @@ func sendRequest(requestMethod string, requestUrl string, requestBody interface{
 }
 
 func getResponseBody[responseType any](response *http.Response) (responseType, error) {
-	buffer := make([]byte, 4096)
-	size, _ := response.Body.Read(buffer)
-	buffer = buffer[:size]
+	buffer, _ := io.ReadAll(response.Body)
 
 	var responseBody responseType
 	err := json.Unmarshal(buffer, &responseBody)

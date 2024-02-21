@@ -2,6 +2,7 @@ package paypal_api
 
 import (
 	"encoding/json"
+	"io"
 	"log"
 	"net/http"
 	"strings"
@@ -40,9 +41,7 @@ func (validator PaypalWebhookValidatorImpl) ValidateWebHook(webHookValidationReq
 		responseLen = 4096
 	}
 
-	responseBuffer := make([]byte, responseLen)
-	actualLen, err := response.Body.Read(responseBuffer)
-	responseBuffer = responseBuffer[:actualLen]
+	responseBuffer, err := io.ReadAll(response.Body)
 	if err != nil {
 		//return false, err
 	}
@@ -61,8 +60,7 @@ func (validator PaypalWebhookValidatorImpl) GetWebhookData(req *http.Request) (W
 	paypalCertUrl := req.Header.Get("Paypal-Cert-Url")
 	paypalAuthAlgo := req.Header.Get("Paypal-Auth-Algo")
 	paypalTransmissionTime := req.Header.Get("Paypal-Transmission-Time")
-	bodyBuffer := make([]byte, req.ContentLength)
-	_, _ = req.Body.Read(bodyBuffer)
+	bodyBuffer, _ := io.ReadAll(req.Body)
 
 	var webHookEventData WebhookNotification
 	err := json.Unmarshal(bodyBuffer, &webHookEventData)
