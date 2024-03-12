@@ -88,8 +88,8 @@ func (paypalClient PaypalClientImpl) CreateBillingPlan(productId string, pricePe
 		PaymentPreferences: paypal_api_data.PaymentPreferences{
 			AutoBillOutstanding:      true,
 			SetupFee:                 paypal_api_data.FixedPrice{Value: "0", CurrencyCode: "USD"},
-			SetupFeeFailureAction:    "CONTINUE",
-			PaymentFailureThreshhold: 3,
+			SetupFeeFailureAction:    "CANCEL",
+			PaymentFailureThreshhold: 2,
 		},
 		Description: description,
 		Status:      "ACTIVE",
