@@ -59,7 +59,7 @@ func (paypalClient PaypalClientImpl) CreateProduct(productName string, productTy
 	createProductReq := paypal_api_data.CreateProductRequest{
 		Name:        productName,
 		Type:        productType,
-		Description: "",
+		Description: "None",
 		Category:    "SOFTWARE",
 	}
 
