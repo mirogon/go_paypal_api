@@ -10,9 +10,9 @@ type CreateBillingPlanRequest struct {
 }
 
 type BillingCycle struct {
-	TenureType    string           `json:"tenure_type"`
-	Sequence      int              `json:"sequence"`
-	Frequency     BillingFrequency `json:"frequency"`
+	TenureType    string           `json:"tenure_type"` //REQUIRED
+	Sequence      int              `json:"sequence"`    //REQUIRED
+	Frequency     BillingFrequency `json:"frequency"`   //REQUIRED
 	TotalCycles   int              `json:"total_cycles"`
 	PricingScheme PricingScheme    `json:"pricing_scheme"`
 }

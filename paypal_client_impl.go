@@ -61,8 +61,6 @@ func (paypalClient PaypalClientImpl) CreateProduct(productName string, productTy
 		Type:        productType,
 		Description: "None",
 		Category:    "SOFTWARE",
-		ImageUrl:    "https://example.com/streaming.jpg",
-		HomeUrl:     "https://example.com/home",
 	}
 
 	response, err := sendRequest("POST", paypalClient.ApiBase+"/v1/catalogs/products", createProductReq, paypalClient.AccessToken)
@@ -79,7 +77,7 @@ func (paypalClient PaypalClientImpl) CreateProduct(productName string, productTy
 }
 
 func (paypalClient PaypalClientImpl) CreateBillingPlan(productId string, pricePerMonth string, name string, description string) (paypal_api_data.CreateBillingPlanResponse, error) {
-	frequency := paypal_api_data.BillingFrequency{IntervalUnit: "Month", IntervalCount: 1}
+	frequency := paypal_api_data.BillingFrequency{IntervalUnit: "MONTH", IntervalCount: 1}
 	fixedPrice := paypal_api_data.FixedPrice{Value: pricePerMonth, CurrencyCode: "USD"}
 	pricingScheme := paypal_api_data.PricingScheme{FixedPrice: fixedPrice}
 	billingCycle := paypal_api_data.BillingCycle{TenureType: "REGULAR", Sequence: 1, Frequency: frequency, TotalCycles: 0, PricingScheme: pricingScheme}
