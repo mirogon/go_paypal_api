@@ -5,8 +5,8 @@ type CreateProductRequest struct {
 	Type        string `json:"type"` //REQUIRED
 	Description string `json:"description"`
 	Category    string `json:"category"`
-	ImageUrl    string `json:"image_url"`
-	HomeUrl     string `json:"home_url"`
+	//ImageUrl    string `json:"image_url"`
+	//HomeUrl     string `json:"home_url"`
 }
 
 type CreateProductResponse struct {
