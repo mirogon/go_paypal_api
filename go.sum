@@ -6,6 +6,8 @@ github.com/logpacker/paypal-go-sdk v2.0.5+incompatible h1:64nJScFt1nunwL6DFW7r9t
 github.com/logpacker/paypal-go-sdk v2.0.5+incompatible/go.mod h1:zoXKRJFi9o3TSaZxngEA+iRjqNckTcvX3Zbqz8nU2mg=
 github.com/mirogon/go_http v0.0.0-20230818210659-454eedffd958 h1:jcf8GNAWmoafMKaF3KZs0HjgErlFV/pEyZkO1Ny+NXE=
 github.com/mirogon/go_http v0.0.0-20230818210659-454eedffd958/go.mod h1:lW8nlgL4l0jnlVZAa5D7JRALIxFJWLeY5UctW5aGzEo=
+github.com/mirogon/go_http v0.0.0-20240119100026-3aa74d2432b8 h1:dZstfZ24OngkJT+abdpBw5zpxYI20dA2WwQaMxfkK1U=
+github.com/mirogon/go_http v0.0.0-20240119100026-3aa74d2432b8/go.mod h1:lW8nlgL4l0jnlVZAa5D7JRALIxFJWLeY5UctW5aGzEo=
 github.com/mirogon/go_util v0.1.0 h1:H3epAmeTY8XNyBr55OQFKOwIDfMmp1b9pzPif0QQfsA=
 github.com/mirogon/go_util v0.1.0/go.mod h1:G+YBwD+SqP1yjLo1S5utRhkTxbI67FjB/X9U3ddo1Xw=
 github.com/mirogon/go_util v0.2.0 h1:dr2L4A/JwfCSVsqT1/7a9ggB8LyTinBNwTrTCBULArI=
