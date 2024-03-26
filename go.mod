@@ -6,10 +6,10 @@ require (
 	github.com/golang/mock v1.6.0
 	github.com/iancoleman/orderedmap v0.3.0
 	github.com/logpacker/paypal-go-sdk v2.0.5+incompatible
-	github.com/mirogon/go_http v0.0.0-20240119100026-3aa74d2432b8
+	github.com/mirogon/go_http v0.0.0-20240326173937-f94c9d6f21bd
 )
 
 require (
-	github.com/mirogon/go_util v0.2.0 // indirect
+	github.com/mirogon/go_util v0.2.1-0.20240221065706-8d1e2adc61b7 // indirect
 	github.com/plutov/paypal v2.0.5+incompatible // indirect
 )

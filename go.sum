@@ -8,10 +8,14 @@ github.com/mirogon/go_http v0.0.0-20230818210659-454eedffd958 h1:jcf8GNAWmoafMKa
 github.com/mirogon/go_http v0.0.0-20230818210659-454eedffd958/go.mod h1:lW8nlgL4l0jnlVZAa5D7JRALIxFJWLeY5UctW5aGzEo=
 github.com/mirogon/go_http v0.0.0-20240119100026-3aa74d2432b8 h1:dZstfZ24OngkJT+abdpBw5zpxYI20dA2WwQaMxfkK1U=
 github.com/mirogon/go_http v0.0.0-20240119100026-3aa74d2432b8/go.mod h1:lW8nlgL4l0jnlVZAa5D7JRALIxFJWLeY5UctW5aGzEo=
+github.com/mirogon/go_http v0.0.0-20240326173937-f94c9d6f21bd h1:rInynGKNhnlcTwP0l8IggHmJzyZmDCifYSqg6MCMCLI=
+github.com/mirogon/go_http v0.0.0-20240326173937-f94c9d6f21bd/go.mod h1:z9AnjTAZHqPR+oWbXCkrNHLm66NirokPvjJ4zALr+QA=
 github.com/mirogon/go_util v0.1.0 h1:H3epAmeTY8XNyBr55OQFKOwIDfMmp1b9pzPif0QQfsA=
 github.com/mirogon/go_util v0.1.0/go.mod h1:G+YBwD+SqP1yjLo1S5utRhkTxbI67FjB/X9U3ddo1Xw=
 github.com/mirogon/go_util v0.2.0 h1:dr2L4A/JwfCSVsqT1/7a9ggB8LyTinBNwTrTCBULArI=
 github.com/mirogon/go_util v0.2.0/go.mod h1:G+YBwD+SqP1yjLo1S5utRhkTxbI67FjB/X9U3ddo1Xw=
+github.com/mirogon/go_util v0.2.1-0.20240221065706-8d1e2adc61b7 h1:y9NMatkxcP0wAkS9XOAJ6JbJrmScpu/6v2o1ZuNMwp4=
+github.com/mirogon/go_util v0.2.1-0.20240221065706-8d1e2adc61b7/go.mod h1:G+YBwD+SqP1yjLo1S5utRhkTxbI67FjB/X9U3ddo1Xw=
 github.com/plutov/paypal v2.0.5+incompatible h1:i5ma4HiHO0MUvJGHaKkL2aqOj0B19q8WoJm1jgzQjlM=
 github.com/plutov/paypal v2.0.5+incompatible/go.mod h1:jOStyiXeDrJ9dHA/yVUB2ahyYPjd5rMXUZ4N7XM37nQ=
 github.com/yuin/goldmark v1.3.5/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
