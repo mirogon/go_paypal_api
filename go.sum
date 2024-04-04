@@ -12,6 +12,8 @@ github.com/mirogon/go_http v0.0.0-20240326173937-f94c9d6f21bd h1:rInynGKNhnlcTwP
 github.com/mirogon/go_http v0.0.0-20240326173937-f94c9d6f21bd/go.mod h1:z9AnjTAZHqPR+oWbXCkrNHLm66NirokPvjJ4zALr+QA=
 github.com/mirogon/go_http v0.0.0-20240404135254-c9556e040c3c h1:r6FFyn2GJing47638jQlrpq1A5/mSu2Mp0WDu/d4eu0=
 github.com/mirogon/go_http v0.0.0-20240404135254-c9556e040c3c/go.mod h1:5wzJpiyfKRHc8QTh3roKPRWm0SNzLGC7G7K3kHoxhqE=
+github.com/mirogon/go_util v0.0.0-20240404134949-03a55bc17431 h1:Ra3k7/Oxd2btlRCDsgXE5JIjPHRaLqHgU7/GngEzC/0=
+github.com/mirogon/go_util v0.0.0-20240404134949-03a55bc17431/go.mod h1:G+YBwD+SqP1yjLo1S5utRhkTxbI67FjB/X9U3ddo1Xw=
 github.com/mirogon/go_util v0.1.0 h1:H3epAmeTY8XNyBr55OQFKOwIDfMmp1b9pzPif0QQfsA=
 github.com/mirogon/go_util v0.1.0/go.mod h1:G+YBwD+SqP1yjLo1S5utRhkTxbI67FjB/X9U3ddo1Xw=
 github.com/mirogon/go_util v0.2.0 h1:dr2L4A/JwfCSVsqT1/7a9ggB8LyTinBNwTrTCBULArI=
