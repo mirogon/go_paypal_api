@@ -2,6 +2,7 @@ package paypal_api
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -110,11 +111,13 @@ func (paypalClient PaypalClientImpl) CreateBillingPlan(productId string, pricePe
 func (paypalClient PaypalClientImpl) CreateSubscription(planId string) (paypal_api_data.CreateSubscriptionResponse, error) {
 	createSubRequest := paypal_api_data.CreateSubscriptionRequestRequiredOnly{PlanId: planId}
 	response, err := sendRequest("POST", paypalClient.ApiBase+"/v1/billing/subscriptions", createSubRequest, paypalClient.AccessToken)
+	fmt.Println("paypalResponse: ", response)
 	if err != nil {
 		return paypal_api_data.CreateSubscriptionResponse{}, err
 	}
 
 	responseBody, err := getResponseBody[paypal_api_data.CreateSubscriptionResponse](response)
+	fmt.Println("paypalResponseBody: ", responseBody)
 	if err != nil {
 		return responseBody, err
 	}
