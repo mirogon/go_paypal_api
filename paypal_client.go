@@ -2,6 +2,7 @@ package paypal_api
 
 import (
 	"github.com/logpacker/paypal-go-sdk"
+	es "github.com/mirogon/go_error_system"
 	paypal_api_data "github.com/mirogon/go_paypal_api/data"
 )
 
@@ -15,7 +16,7 @@ type PaypalClient interface {
 	CreateBillingPlan(productId string, pricePerMonth string, name string, description string) (paypal_api_data.CreateBillingPlanResponse, error)
 	CreateSubscription(planId string) (paypal_api_data.CreateSubscriptionResponse, error)
 	CancelSubscription(subscriptionId string) error
-	ShowSubscriptionDetails(subscriptionId string) (paypal_api_data.ShowSubscriptionDetailsResponse, error)
+	ShowSubscriptionDetails(subscriptionId string) (paypal_api_data.ShowSubscriptionDetailsResponse, es.Error)
 	CaptureSubscription(subscriptionId string, amount string) error
 	GetSubscriptionTransactions(subscriptionId string, startTime string, endTime string) (paypal_api_data.GetSubscriptionTransactionsResponse, error)
 }

@@ -10,6 +10,7 @@ require (
 )
 
 require (
+	github.com/mirogon/go_error_system v0.0.0-20240404140705-fcf86f5958a7 // indirect
 	github.com/mirogon/go_util v0.0.0-20240404134949-03a55bc17431 // indirect
 	github.com/plutov/paypal v2.0.5+incompatible // indirect
 )

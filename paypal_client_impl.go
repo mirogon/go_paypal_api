@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/logpacker/paypal-go-sdk"
+	es "github.com/mirogon/go_error_system"
 	http_ "github.com/mirogon/go_http"
 	paypal_api_data "github.com/mirogon/go_paypal_api/data"
 )
@@ -138,15 +139,15 @@ func (paypalClient PaypalClientImpl) CancelSubscription(subscriptionId string) e
 	return nil
 }
 
-func (paypalClient PaypalClientImpl) ShowSubscriptionDetails(subscriptionId string) (paypal_api_data.ShowSubscriptionDetailsResponse, error) {
+func (paypalClient PaypalClientImpl) ShowSubscriptionDetails(subscriptionId string) (paypal_api_data.ShowSubscriptionDetailsResponse, es.Error) {
 	response, err := sendRequest("GET", paypalClient.ApiBase+"/v1/billing/subscriptions/"+subscriptionId, nil, paypalClient.AccessToken)
 	if err != nil {
-		return paypal_api_data.ShowSubscriptionDetailsResponse{}, err
+		return paypal_api_data.ShowSubscriptionDetailsResponse{}, es.NewError("f93ff0", "ShowSubscriptionDetails_SendRequest_"+err.Error(), nil)
 	}
 
 	responseBody, err := getResponseBody[paypal_api_data.ShowSubscriptionDetailsResponse](response)
 	if err != nil {
-		return paypal_api_data.ShowSubscriptionDetailsResponse{}, err
+		return paypal_api_data.ShowSubscriptionDetailsResponse{}, es.NewError("FbP9ia", "ShowSubscriptionDetails_GetResponseBody_"+err.Error(), nil)
 	}
 
 	return responseBody, nil

@@ -4,6 +4,8 @@ github.com/iancoleman/orderedmap v0.3.0 h1:5cbR2grmZR/DiVt+VJopEhtVs9YGInGIxAoMJ
 github.com/iancoleman/orderedmap v0.3.0/go.mod h1:XuLcCUkdL5owUCQeF2Ue9uuw1EptkJDkXXS7VoV7XGE=
 github.com/logpacker/paypal-go-sdk v2.0.5+incompatible h1:64nJScFt1nunwL6DFW7r9tP+14uEr/onTj6GPe+vZL8=
 github.com/logpacker/paypal-go-sdk v2.0.5+incompatible/go.mod h1:zoXKRJFi9o3TSaZxngEA+iRjqNckTcvX3Zbqz8nU2mg=
+github.com/mirogon/go_error_system v0.0.0-20240404140705-fcf86f5958a7 h1:17JGqDfwzDaC8RHfMd1ICm7cmOrzcj4yZpVPS6/w0u8=
+github.com/mirogon/go_error_system v0.0.0-20240404140705-fcf86f5958a7/go.mod h1:St2zctlKP/3pD0BO0NENXn6lBMxCkvszqiZRI0iom2o=
 github.com/mirogon/go_http v0.0.0-20230818210659-454eedffd958 h1:jcf8GNAWmoafMKaF3KZs0HjgErlFV/pEyZkO1Ny+NXE=
 github.com/mirogon/go_http v0.0.0-20230818210659-454eedffd958/go.mod h1:lW8nlgL4l0jnlVZAa5D7JRALIxFJWLeY5UctW5aGzEo=
 github.com/mirogon/go_http v0.0.0-20240119100026-3aa74d2432b8 h1:dZstfZ24OngkJT+abdpBw5zpxYI20dA2WwQaMxfkK1U=

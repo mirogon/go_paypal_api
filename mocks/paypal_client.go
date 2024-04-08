@@ -9,6 +9,7 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	paypal "github.com/logpacker/paypal-go-sdk"
+	error_system "github.com/mirogon/go_error_system"
 	paypal_api_data "github.com/mirogon/go_paypal_api/data"
 )
 
@@ -197,11 +198,11 @@ func (mr *MockPaypalClientMockRecorder) IsSandbox() *gomock.Call {
 }
 
 // ShowSubscriptionDetails mocks base method.
-func (m *MockPaypalClient) ShowSubscriptionDetails(subscriptionId string) (paypal_api_data.ShowSubscriptionDetailsResponse, error) {
+func (m *MockPaypalClient) ShowSubscriptionDetails(subscriptionId string) (paypal_api_data.ShowSubscriptionDetailsResponse, error_system.Error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ShowSubscriptionDetails", subscriptionId)
 	ret0, _ := ret[0].(paypal_api_data.ShowSubscriptionDetailsResponse)
-	ret1, _ := ret[1].(error)
+	ret1, _ := ret[1].(error_system.Error)
 	return ret0, ret1
 }
 
