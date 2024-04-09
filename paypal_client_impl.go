@@ -2,6 +2,7 @@ package paypal_api
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -181,8 +182,8 @@ func sendRequest(requestMethod string, requestUrl string, requestBody interface{
 	if err != nil {
 		return nil, es.NewError("mcOCIo", "SendRequest_Marshal_"+err.Error(), nil)
 	}
+
 	stringReader := strings.NewReader(string(requestJson))
-	requestSender := http_.HttpRequestSenderImpl{}
 	request, err := http.NewRequest(requestMethod, requestUrl, stringReader)
 	if err != nil {
 		return nil, es.NewError("JlIoqt", "SendRequest_NewRequest_"+err.Error(), nil)
@@ -192,9 +193,13 @@ func sendRequest(requestMethod string, requestUrl string, requestBody interface{
 	request.Header.Add("Content-Type", "application/json")
 	request.Header.Add("Accept", "application/json")
 
+	requestSender := http_.HttpRequestSenderImpl{}
 	response, err := requestSender.SendRequest(request)
 	if err != nil {
 		return nil, es.NewError("CghUaD", "SendRequest_SendRequest_"+err.Error(), nil)
+	}
+	if response.StatusCode < 200 || response.StatusCode > 299 {
+		return nil, es.NewError("DiT6En", "SendRequest_ResponseStatusNotOk_"+fmt.Sprintf("%d", response.StatusCode), nil)
 	}
 
 	return response, nil
