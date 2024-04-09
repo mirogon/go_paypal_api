@@ -14,7 +14,7 @@ type PaypalClient interface {
 	GetAccessToken() string
 	CreateProduct(productName string, productType string) (paypal_api_data.CreateProductResponse, error)
 	CreateBillingPlan(productId string, pricePerMonth string, name string, description string) (paypal_api_data.CreateBillingPlanResponse, error)
-	CreateSubscription(planId string) (paypal_api_data.CreateSubscriptionResponse, error)
+	CreateSubscription(planId string) (paypal_api_data.CreateSubscriptionResponse, es.Error)
 	CancelSubscription(subscriptionId string) error
 	ShowSubscriptionDetails(subscriptionId string) (paypal_api_data.ShowSubscriptionDetailsResponse, es.Error)
 	CaptureSubscription(subscriptionId string, amount string) error

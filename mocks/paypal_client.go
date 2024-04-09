@@ -125,11 +125,11 @@ func (mr *MockPaypalClientMockRecorder) CreateProduct(productName, productType i
 }
 
 // CreateSubscription mocks base method.
-func (m *MockPaypalClient) CreateSubscription(planId string) (paypal_api_data.CreateSubscriptionResponse, error) {
+func (m *MockPaypalClient) CreateSubscription(planId string) (paypal_api_data.CreateSubscriptionResponse, error_system.Error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateSubscription", planId)
 	ret0, _ := ret[0].(paypal_api_data.CreateSubscriptionResponse)
-	ret1, _ := ret[1].(error)
+	ret1, _ := ret[1].(error_system.Error)
 	return ret0, ret1
 }
 
