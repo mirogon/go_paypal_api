@@ -142,12 +142,12 @@ func (paypalClient PaypalClientImpl) CancelSubscription(subscriptionId string) e
 func (paypalClient PaypalClientImpl) ShowSubscriptionDetails(subscriptionId string) (paypal_api_data.ShowSubscriptionDetailsResponse, es.Error) {
 	response, err := sendRequest("GET", paypalClient.ApiBase+"/v1/billing/subscriptions/"+subscriptionId, nil, paypalClient.AccessToken)
 	if err != nil {
-		return paypal_api_data.ShowSubscriptionDetailsResponse{}, es.NewError("f93ff0", "ShowSubscriptionDetails_SendRequest_"+err.Error(), nil)
+		return paypal_api_data.ShowSubscriptionDetailsResponse{}, es.NewError("f93ff0", "ShowSubscriptionDetails_", err)
 	}
 
 	responseBody, err := getResponseBody[paypal_api_data.ShowSubscriptionDetailsResponse](response)
 	if err != nil {
-		return paypal_api_data.ShowSubscriptionDetailsResponse{}, es.NewError("FbP9ia", "ShowSubscriptionDetails_GetResponseBody_"+err.Error(), nil)
+		return paypal_api_data.ShowSubscriptionDetailsResponse{}, es.NewError("FbP9ia", "ShowSubscriptionDetails_", err)
 	}
 
 	return responseBody, nil
@@ -179,16 +179,16 @@ func (paypalClient PaypalClientImpl) GetSubscriptionTransactions(subscriptionId 
 	return responseBody, nil
 }
 
-func sendRequest(requestMethod string, requestUrl string, requestBody interface{}, paypalAccessToken string) (*http.Response, error) {
+func sendRequest(requestMethod string, requestUrl string, requestBody interface{}, paypalAccessToken string) (*http.Response, es.Error) {
 	requestJson, err := json.Marshal(requestBody)
 	if err != nil {
-		return nil, err
+		return nil, es.NewError("mcOCIo", "SendRequest_Marshal_"+err.Error(), nil)
 	}
 	stringReader := strings.NewReader(string(requestJson))
 	requestSender := http_.HttpRequestSenderImpl{}
 	request, err := http.NewRequest(requestMethod, requestUrl, stringReader)
 	if err != nil {
-		return nil, err
+		return nil, es.NewError("JlIoqt", "SendRequest_NewRequest_"+err.Error(), nil)
 	}
 
 	request.Header.Add("Authorization", "Bearer "+paypalAccessToken)
@@ -197,19 +197,22 @@ func sendRequest(requestMethod string, requestUrl string, requestBody interface{
 
 	response, err := requestSender.SendRequest(request)
 	if err != nil {
-		return nil, err
+		return nil, es.NewError("CghUaD", "SendRequest_SendRequest_"+err.Error(), nil)
 	}
 
 	return response, nil
 }
 
-func getResponseBody[responseType any](response *http.Response) (responseType, error) {
-	buffer, _ := io.ReadAll(response.Body)
-
+func getResponseBody[responseType any](response *http.Response) (responseType, es.Error) {
+	buffer, err := io.ReadAll(response.Body)
 	var responseBody responseType
-	err := json.Unmarshal(buffer, &responseBody)
 	if err != nil {
-		return responseBody, err
+		return responseBody, es.NewError("Oh6D89", "GetResponseBody_ReadAll_ "+err.Error(), nil)
+	}
+
+	err = json.Unmarshal(buffer, &responseBody)
+	if err != nil {
+		return responseBody, es.NewError("JJKf90", "GetResponseBody_Unmarshal_"+err.Error(), nil)
 	}
 	return responseBody, nil
 }
