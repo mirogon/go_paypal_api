@@ -8,15 +8,15 @@ import (
 
 type PaypalClient interface {
 	IsSandbox() bool
-	CreateOrder(referenceId string, price string, buyerFirstName string, buyerLastName string, buyerEmail string, intent string, brandName string, returnUrl string, cancelUrl string) (*paypal.Order, error)
-	GetOrder(orderId string) (*paypal.Order, error)
-	CaptureOrder(orderId string) (*paypal.CaptureOrderResponse, error)
+	CreateOrder(referenceId string, price string, buyerFirstName string, buyerLastName string, buyerEmail string, intent string, brandName string, returnUrl string, cancelUrl string) (*paypal.Order, es.Error)
+	GetOrder(orderId string) (*paypal.Order, es.Error)
+	CaptureOrder(orderId string) (*paypal.CaptureOrderResponse, es.Error)
 	GetAccessToken() string
-	CreateProduct(productName string, productType string) (paypal_api_data.CreateProductResponse, error)
-	CreateBillingPlan(productId string, pricePerMonth string, name string, description string) (paypal_api_data.CreateBillingPlanResponse, error)
+	CreateProduct(productName string, productType string) (paypal_api_data.CreateProductResponse, es.Error)
+	CreateBillingPlan(productId string, pricePerMonth string, name string, description string) (paypal_api_data.CreateBillingPlanResponse, es.Error)
 	CreateSubscription(planId string) (paypal_api_data.CreateSubscriptionResponse, es.Error)
-	CancelSubscription(subscriptionId string) error
+	CancelSubscription(subscriptionId string) es.Error
 	ShowSubscriptionDetails(subscriptionId string) (paypal_api_data.ShowSubscriptionDetailsResponse, es.Error)
-	CaptureSubscription(subscriptionId string, amount string) error
-	GetSubscriptionTransactions(subscriptionId string, startTime string, endTime string) (paypal_api_data.GetSubscriptionTransactionsResponse, error)
+	CaptureSubscription(subscriptionId string, amount string) es.Error
+	GetSubscriptionTransactions(subscriptionId string, startTime string, endTime string) (paypal_api_data.GetSubscriptionTransactionsResponse, es.Error)
 }

@@ -21,12 +21,15 @@ type PaypalClientImpl struct {
 	isSandbox    bool
 }
 
-func CreatePaypalClient(clientId string, clientSecret string, apiBase string, isSandbox bool) (PaypalClientImpl, error) {
+func CreatePaypalClient(clientId string, clientSecret string, apiBase string, isSandbox bool) (PaypalClientImpl, es.Error) {
 	paypalClient, err := paypal.NewClient(clientId, clientSecret, apiBase)
 	if err != nil {
-		return PaypalClientImpl{}, err
+		return PaypalClientImpl{}, es.NewError("lKtWIm", "CreatePaypalClient_NewClient_"+err.Error(), nil)
 	}
-	token, _ := paypalClient.GetAccessToken()
+	token, err := paypalClient.GetAccessToken()
+	if err != nil {
+		return PaypalClientImpl{}, es.NewError("XyR3Wd", "CreatePaypalClient_GetAccessToken_"+err.Error(), nil)
+	}
 	return PaypalClientImpl{paypalClient: paypalClient, AccessToken: token.Token, ApiBase: apiBase, isSandbox: isSandbox}, nil
 }
 
@@ -34,30 +37,39 @@ func (paypalClient PaypalClientImpl) IsSandbox() bool {
 	return paypalClient.isSandbox
 }
 
-func (paypalClient PaypalClientImpl) GetOrder(orderId string) (*paypal.Order, error) {
-	return paypalClient.paypalClient.GetOrder(orderId)
+func (paypalClient PaypalClientImpl) GetOrder(orderId string) (*paypal.Order, es.Error) {
+	order, err := paypalClient.paypalClient.GetOrder(orderId)
+	if err != nil {
+		return order, es.NewError("as7oXs", "GetOrder_"+err.Error(), nil)
+	}
+
+	return order, nil
 }
 
-func (paypalClient PaypalClientImpl) CreateOrder(referenceId string, price string, buyerFirstName string, buyerLastName string, buyerEmail string, intent string, brandName string, returnUrl string, cancelUrl string) (*paypal.Order, error) {
+func (paypalClient PaypalClientImpl) CreateOrder(referenceId string, price string, buyerFirstName string, buyerLastName string, buyerEmail string, intent string, brandName string, returnUrl string, cancelUrl string) (*paypal.Order, es.Error) {
 	purchaseUnitAmount := paypal.PurchaseUnitAmount{Currency: "USD", Value: price}
 	purchaseUnits := []paypal.PurchaseUnitRequest{{ReferenceID: referenceId, Amount: &purchaseUnitAmount}}
 	payerName := paypal.CreateOrderPayerName{GivenName: buyerFirstName, Surname: buyerLastName}
 	payer := paypal.CreateOrderPayer{Name: &payerName, EmailAddress: buyerEmail}
 	appContext := paypal.ApplicationContext{UserAction: "PAY_NOW", BrandName: brandName, ReturnURL: returnUrl, CancelURL: cancelUrl}
 	order, err := paypalClient.paypalClient.CreateOrder(intent, purchaseUnits, &payer, &appContext)
-	return order, err
+	return order, es.NewError("Q2Z6ju", "CreateOrder_"+err.Error(), nil)
 }
 
-func (paypalClient PaypalClientImpl) CaptureOrder(orderId string) (*paypal.CaptureOrderResponse, error) {
+func (paypalClient PaypalClientImpl) CaptureOrder(orderId string) (*paypal.CaptureOrderResponse, es.Error) {
 	log.Printf("Capture order with id: %s", orderId)
-	return paypalClient.paypalClient.CaptureOrder(orderId, paypal.CaptureOrderRequest{})
+	resp, err := paypalClient.paypalClient.CaptureOrder(orderId, paypal.CaptureOrderRequest{})
+	if err != nil {
+		return resp, es.NewError("MHRHfj", "CaptureOrder_"+err.Error(), nil)
+	}
+	return resp, nil
 }
 
 func (paypalClient PaypalClientImpl) GetAccessToken() string {
 	return paypalClient.AccessToken
 }
 
-func (paypalClient PaypalClientImpl) CreateProduct(productName string, productType string) (paypal_api_data.CreateProductResponse, error) {
+func (paypalClient PaypalClientImpl) CreateProduct(productName string, productType string) (paypal_api_data.CreateProductResponse, es.Error) {
 	createProductReq := paypal_api_data.CreateProductRequest{
 		Name:        productName,
 		Type:        productType,
@@ -67,18 +79,18 @@ func (paypalClient PaypalClientImpl) CreateProduct(productName string, productTy
 
 	response, err := sendRequest("POST", paypalClient.ApiBase+"/v1/catalogs/products", createProductReq, paypalClient.AccessToken)
 	if err != nil {
-		return paypal_api_data.CreateProductResponse{}, err
+		return paypal_api_data.CreateProductResponse{}, es.NewError("3XUvQb", "CreateProduct_", err)
 	}
 
 	responseBody, err := getResponseBody[paypal_api_data.CreateProductResponse](response)
 	if err != nil {
-		return responseBody, err
+		return responseBody, es.NewError("LnEbsw", "CreateProduct_", err)
 	}
 
 	return responseBody, nil
 }
 
-func (paypalClient PaypalClientImpl) CreateBillingPlan(productId string, pricePerMonth string, name string, description string) (paypal_api_data.CreateBillingPlanResponse, error) {
+func (paypalClient PaypalClientImpl) CreateBillingPlan(productId string, pricePerMonth string, name string, description string) (paypal_api_data.CreateBillingPlanResponse, es.Error) {
 	frequency := paypal_api_data.BillingFrequency{IntervalUnit: "MONTH", IntervalCount: 1}
 	fixedPrice := paypal_api_data.FixedPrice{Value: pricePerMonth, CurrencyCode: "USD"}
 	pricingScheme := paypal_api_data.PricingScheme{FixedPrice: fixedPrice}
@@ -99,12 +111,12 @@ func (paypalClient PaypalClientImpl) CreateBillingPlan(productId string, pricePe
 
 	response, err := sendRequest("POST", paypalClient.ApiBase+"/v1/billing/plans", createPlanRequest, paypalClient.AccessToken)
 	if err != nil {
-		return paypal_api_data.CreateBillingPlanResponse{}, err
+		return paypal_api_data.CreateBillingPlanResponse{}, es.NewError("oZwLmv", "CreateBillingPlan_", err)
 	}
 
 	responseBody, err := getResponseBody[paypal_api_data.CreateBillingPlanResponse](response)
 	if err != nil {
-		return responseBody, err
+		return responseBody, es.NewError("IR61kK", "CreateBillingPlan_", err)
 	}
 	return responseBody, nil
 }
@@ -123,15 +135,15 @@ func (paypalClient PaypalClientImpl) CreateSubscription(planId string) (paypal_a
 	return responseBody, nil
 }
 
-func (paypalClient PaypalClientImpl) CancelSubscription(subscriptionId string) error {
+func (paypalClient PaypalClientImpl) CancelSubscription(subscriptionId string) es.Error {
 	cancelRequest := paypal_api_data.RequestCancelSubscription{Reason: "Not satisfied with the service"}
 	response, err := sendRequest("POST", paypalClient.ApiBase+"/v1/billing/subscriptions/"+subscriptionId+"/cancel", cancelRequest, paypalClient.AccessToken)
 	if err != nil {
-		return err
+		return es.NewError("GDD0Xg", "CancelSubscription_", err)
 	}
 
 	if response.StatusCode != 204 {
-		return err
+		return es.NewError("8D26Nj", "CancelSubscription_InvalidStatusCode", nil)
 	}
 
 	return nil
@@ -151,27 +163,27 @@ func (paypalClient PaypalClientImpl) ShowSubscriptionDetails(subscriptionId stri
 	return responseBody, nil
 }
 
-func (paypalClient PaypalClientImpl) CaptureSubscription(subscriptionId string, amount string) error {
+func (paypalClient PaypalClientImpl) CaptureSubscription(subscriptionId string, amount string) es.Error {
 	requestBody := paypal_api_data.CaptureSubscriptionRequest{}
 	response, err := sendRequest("POST", paypalClient.ApiBase+"/v1/billing/subscriptions/"+subscriptionId+"/capture", requestBody, paypalClient.AccessToken)
 	if err != nil {
-		return err
+		return es.NewError("yX93IT", "CaptureSubscription_", err)
 	}
 	if response.StatusCode != 202 {
-		return err
+		return es.NewError("GufcqQ", "CaptureSubscription_", err)
 	}
 	return nil
 }
 
-func (paypalClient PaypalClientImpl) GetSubscriptionTransactions(subscriptionId string, startTime string, endTime string) (paypal_api_data.GetSubscriptionTransactionsResponse, error) {
+func (paypalClient PaypalClientImpl) GetSubscriptionTransactions(subscriptionId string, startTime string, endTime string) (paypal_api_data.GetSubscriptionTransactionsResponse, es.Error) {
 	response, err := sendRequest("GET", paypalClient.ApiBase+"/v1/billing/subscriptions/"+subscriptionId+"/transactions?start_time="+startTime+"&end_time="+endTime, nil, paypalClient.AccessToken)
 	if err != nil {
-		return paypal_api_data.GetSubscriptionTransactionsResponse{}, err
+		return paypal_api_data.GetSubscriptionTransactionsResponse{}, es.NewError("LIpk2W", "GetSubscriptionTransactions_", err)
 	}
 
 	responseBody, err := getResponseBody[paypal_api_data.GetSubscriptionTransactionsResponse](response)
 	if err != nil {
-		return paypal_api_data.GetSubscriptionTransactionsResponse{}, err
+		return paypal_api_data.GetSubscriptionTransactionsResponse{}, es.NewError("diIQfW", "GetSubscriptionTransactions_", err)
 	}
 
 	return responseBody, nil

@@ -37,10 +37,10 @@ func (m *MockPaypalClient) EXPECT() *MockPaypalClientMockRecorder {
 }
 
 // CancelSubscription mocks base method.
-func (m *MockPaypalClient) CancelSubscription(subscriptionId string) error {
+func (m *MockPaypalClient) CancelSubscription(subscriptionId string) error_system.Error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CancelSubscription", subscriptionId)
-	ret0, _ := ret[0].(error)
+	ret0, _ := ret[0].(error_system.Error)
 	return ret0
 }
 
@@ -51,11 +51,11 @@ func (mr *MockPaypalClientMockRecorder) CancelSubscription(subscriptionId interf
 }
 
 // CaptureOrder mocks base method.
-func (m *MockPaypalClient) CaptureOrder(orderId string) (*paypal.CaptureOrderResponse, error) {
+func (m *MockPaypalClient) CaptureOrder(orderId string) (*paypal.CaptureOrderResponse, error_system.Error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CaptureOrder", orderId)
 	ret0, _ := ret[0].(*paypal.CaptureOrderResponse)
-	ret1, _ := ret[1].(error)
+	ret1, _ := ret[1].(error_system.Error)
 	return ret0, ret1
 }
 
@@ -66,10 +66,10 @@ func (mr *MockPaypalClientMockRecorder) CaptureOrder(orderId interface{}) *gomoc
 }
 
 // CaptureSubscription mocks base method.
-func (m *MockPaypalClient) CaptureSubscription(subscriptionId, amount string) error {
+func (m *MockPaypalClient) CaptureSubscription(subscriptionId, amount string) error_system.Error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CaptureSubscription", subscriptionId, amount)
-	ret0, _ := ret[0].(error)
+	ret0, _ := ret[0].(error_system.Error)
 	return ret0
 }
 
@@ -80,11 +80,11 @@ func (mr *MockPaypalClientMockRecorder) CaptureSubscription(subscriptionId, amou
 }
 
 // CreateBillingPlan mocks base method.
-func (m *MockPaypalClient) CreateBillingPlan(productId, pricePerMonth, name, description string) (paypal_api_data.CreateBillingPlanResponse, error) {
+func (m *MockPaypalClient) CreateBillingPlan(productId, pricePerMonth, name, description string) (paypal_api_data.CreateBillingPlanResponse, error_system.Error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateBillingPlan", productId, pricePerMonth, name, description)
 	ret0, _ := ret[0].(paypal_api_data.CreateBillingPlanResponse)
-	ret1, _ := ret[1].(error)
+	ret1, _ := ret[1].(error_system.Error)
 	return ret0, ret1
 }
 
@@ -95,11 +95,11 @@ func (mr *MockPaypalClientMockRecorder) CreateBillingPlan(productId, pricePerMon
 }
 
 // CreateOrder mocks base method.
-func (m *MockPaypalClient) CreateOrder(referenceId, price, buyerFirstName, buyerLastName, buyerEmail, intent, brandName, returnUrl, cancelUrl string) (*paypal.Order, error) {
+func (m *MockPaypalClient) CreateOrder(referenceId, price, buyerFirstName, buyerLastName, buyerEmail, intent, brandName, returnUrl, cancelUrl string) (*paypal.Order, error_system.Error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateOrder", referenceId, price, buyerFirstName, buyerLastName, buyerEmail, intent, brandName, returnUrl, cancelUrl)
 	ret0, _ := ret[0].(*paypal.Order)
-	ret1, _ := ret[1].(error)
+	ret1, _ := ret[1].(error_system.Error)
 	return ret0, ret1
 }
 
@@ -110,11 +110,11 @@ func (mr *MockPaypalClientMockRecorder) CreateOrder(referenceId, price, buyerFir
 }
 
 // CreateProduct mocks base method.
-func (m *MockPaypalClient) CreateProduct(productName, productType string) (paypal_api_data.CreateProductResponse, error) {
+func (m *MockPaypalClient) CreateProduct(productName, productType string) (paypal_api_data.CreateProductResponse, error_system.Error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateProduct", productName, productType)
 	ret0, _ := ret[0].(paypal_api_data.CreateProductResponse)
-	ret1, _ := ret[1].(error)
+	ret1, _ := ret[1].(error_system.Error)
 	return ret0, ret1
 }
 
@@ -154,11 +154,11 @@ func (mr *MockPaypalClientMockRecorder) GetAccessToken() *gomock.Call {
 }
 
 // GetOrder mocks base method.
-func (m *MockPaypalClient) GetOrder(orderId string) (*paypal.Order, error) {
+func (m *MockPaypalClient) GetOrder(orderId string) (*paypal.Order, error_system.Error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetOrder", orderId)
 	ret0, _ := ret[0].(*paypal.Order)
-	ret1, _ := ret[1].(error)
+	ret1, _ := ret[1].(error_system.Error)
 	return ret0, ret1
 }
 
@@ -169,11 +169,11 @@ func (mr *MockPaypalClientMockRecorder) GetOrder(orderId interface{}) *gomock.Ca
 }
 
 // GetSubscriptionTransactions mocks base method.
-func (m *MockPaypalClient) GetSubscriptionTransactions(subscriptionId, startTime, endTime string) (paypal_api_data.GetSubscriptionTransactionsResponse, error) {
+func (m *MockPaypalClient) GetSubscriptionTransactions(subscriptionId, startTime, endTime string) (paypal_api_data.GetSubscriptionTransactionsResponse, error_system.Error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSubscriptionTransactions", subscriptionId, startTime, endTime)
 	ret0, _ := ret[0].(paypal_api_data.GetSubscriptionTransactionsResponse)
-	ret1, _ := ret[1].(error)
+	ret1, _ := ret[1].(error_system.Error)
 	return ret0, ret1
 }
 
