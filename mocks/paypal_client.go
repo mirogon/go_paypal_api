@@ -211,3 +211,15 @@ func (mr *MockPaypalClientMockRecorder) ShowSubscriptionDetails(subscriptionId i
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ShowSubscriptionDetails", reflect.TypeOf((*MockPaypalClient)(nil).ShowSubscriptionDetails), subscriptionId)
 }
+
+// UpdateToken mocks base method.
+func (m *MockPaypalClient) UpdateToken() {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "UpdateToken")
+}
+
+// UpdateToken indicates an expected call of UpdateToken.
+func (mr *MockPaypalClientMockRecorder) UpdateToken() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateToken", reflect.TypeOf((*MockPaypalClient)(nil).UpdateToken))
+}

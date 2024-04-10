@@ -33,6 +33,16 @@ func CreatePaypalClient(clientId string, clientSecret string, apiBase string, is
 	return PaypalClientImpl{paypalClient: paypalClient, AccessToken: token.Token, ApiBase: apiBase, isSandbox: isSandbox}, nil
 }
 
+func (paypalClient *PaypalClientImpl) UpdateToken() es.Error {
+	token, err := paypalClient.paypalClient.GetAccessToken()
+	if err != nil {
+		return es.NewError("ABHh56", "UpdateToken_"+err.Error(), nil)
+	}
+
+	paypalClient.AccessToken = token.Token
+	return nil
+}
+
 func (paypalClient PaypalClientImpl) IsSandbox() bool {
 	return paypalClient.isSandbox
 }
