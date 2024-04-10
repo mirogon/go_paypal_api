@@ -211,7 +211,8 @@ func sendRequest(requestMethod string, requestUrl string, requestBody interface{
 		return nil, es.NewError("CghUaD", "SendRequest_SendRequest_"+err.Error(), nil)
 	}
 	if response.StatusCode < 200 || response.StatusCode > 299 {
-		return nil, es.NewError("DiT6En", "SendRequest_ResponseStatusNotOk_"+fmt.Sprintf("%d", response.StatusCode), nil)
+		respBody, _ := io.ReadAll(response.Body)
+		return nil, es.NewError("DiT6En", "SendRequest_ResponseStatusNotOk_"+fmt.Sprintf("%d", response.StatusCode)+"_"+response.Status+"_"+(string)(respBody), nil)
 	}
 
 	return response, nil
