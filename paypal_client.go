@@ -7,7 +7,6 @@ import (
 )
 
 type PaypalClient interface {
-	UpdateToken()
 	IsSandbox() bool
 	CreateOrder(referenceId string, price string, buyerFirstName string, buyerLastName string, buyerEmail string, intent string, brandName string, returnUrl string, cancelUrl string) (*paypal.Order, es.Error)
 	GetOrder(orderId string) (*paypal.Order, es.Error)
