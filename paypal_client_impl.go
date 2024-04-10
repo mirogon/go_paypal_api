@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/logpacker/paypal-go-sdk"
 	es "github.com/mirogon/go_error_system"
@@ -30,7 +31,17 @@ func CreatePaypalClient(clientId string, clientSecret string, apiBase string, is
 	if err != nil {
 		return PaypalClientImpl{}, es.NewError("XyR3Wd", "CreatePaypalClient_GetAccessToken_"+err.Error(), nil)
 	}
-	return PaypalClientImpl{paypalClient: paypalClient, AccessToken: token.Token, ApiBase: apiBase, isSandbox: isSandbox}, nil
+	client := PaypalClientImpl{paypalClient: paypalClient, AccessToken: token.Token, ApiBase: apiBase, isSandbox: isSandbox}
+	go UpdateTokenEveryHour(&client)
+	return client, nil
+}
+
+func UpdateTokenEveryHour(paypalClient *PaypalClientImpl) {
+	dur, _ := time.ParseDuration("60m")
+	for {
+		paypalClient.UpdateToken()
+		time.Sleep(dur)
+	}
 }
 
 func (paypalClient *PaypalClientImpl) UpdateToken() es.Error {
@@ -38,7 +49,6 @@ func (paypalClient *PaypalClientImpl) UpdateToken() es.Error {
 	if err != nil {
 		return es.NewError("ABHh56", "UpdateToken_"+err.Error(), nil)
 	}
-
 	paypalClient.AccessToken = token.Token
 	return nil
 }
