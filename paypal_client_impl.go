@@ -81,7 +81,10 @@ func (paypalClient PaypalClientImpl) CreateOrder(referenceId string, price strin
 	payer := paypal.CreateOrderPayer{Name: &payerName, EmailAddress: buyerEmail}
 	appContext := paypal.ApplicationContext{UserAction: "PAY_NOW", BrandName: brandName, ReturnURL: returnUrl, CancelURL: cancelUrl}
 	order, err := paypalClient.PaypalClient.CreateOrder(intent, purchaseUnits, &payer, &appContext)
-	return order, es.NewError("Q2Z6ju", "CreateOrder_"+err.Error(), nil)
+	if err != nil {
+		return order, es.NewError("Q2Z6ju", "CreateOrder_"+err.Error(), nil)
+	}
+	return order, nil
 }
 
 func (paypalClient PaypalClientImpl) CaptureOrder(orderId string) (*paypal.CaptureOrderResponse, es.Error) {
