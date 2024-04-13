@@ -31,7 +31,7 @@ func CreatePaypalClient(clientId string, clientSecret string, apiBase string, is
 		return PaypalClientImpl{}, es.NewError("XyR3Wd", "CreatePaypalClient_GetAccessToken_"+err.Error(), nil)
 	}
 	client := PaypalClientImpl{PaypalClient: paypalClient, ApiBase: apiBase, isSandbox: isSandbox}
-	go UpdateTokenEveryHour(&client)
+	go UpdateTokenWhenExpired(&client)
 	return client, nil
 }
 
@@ -39,11 +39,16 @@ func (client PaypalClientImpl) AccessToken() string {
 	return client.PaypalClient.Token.Token
 }
 
-func UpdateTokenEveryHour(paypalClient *PaypalClientImpl) {
-	dur, _ := time.ParseDuration("30s")
+func UpdateTokenWhenExpired(paypalClient *PaypalClientImpl) {
 	for {
+		err := paypalClient.UpdateToken()
+		if err != nil {
+			fmt.Println("Error updating token: " + err.Error())
+		}
+		expiresInSec := paypalClient.PaypalClient.Token.ExpiresIn
+		secString := fmt.Sprintf("%d", int64(expiresInSec))
+		dur, _ := time.ParseDuration(secString + "s")
 		time.Sleep(dur)
-		paypalClient.UpdateToken()
 	}
 }
 
