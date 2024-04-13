@@ -16,8 +16,7 @@ import (
 )
 
 type PaypalClientImpl struct {
-	paypalClient *paypal.Client
-	AccessToken  string
+	PaypalClient *paypal.Client
 	ApiBase      string
 	isSandbox    bool
 }
@@ -27,29 +26,33 @@ func CreatePaypalClient(clientId string, clientSecret string, apiBase string, is
 	if err != nil {
 		return PaypalClientImpl{}, es.NewError("lKtWIm", "CreatePaypalClient_NewClient_"+err.Error(), nil)
 	}
-	token, err := paypalClient.GetAccessToken()
+	_, err = paypalClient.GetAccessToken()
 	if err != nil {
 		return PaypalClientImpl{}, es.NewError("XyR3Wd", "CreatePaypalClient_GetAccessToken_"+err.Error(), nil)
 	}
-	client := PaypalClientImpl{paypalClient: paypalClient, AccessToken: token.Token, ApiBase: apiBase, isSandbox: isSandbox}
+	client := PaypalClientImpl{PaypalClient: paypalClient, ApiBase: apiBase, isSandbox: isSandbox}
 	go UpdateTokenEveryHour(&client)
 	return client, nil
 }
 
+func (client PaypalClientImpl) AccessToken() string {
+	return client.PaypalClient.Token.Token
+}
+
 func UpdateTokenEveryHour(paypalClient *PaypalClientImpl) {
-	dur, _ := time.ParseDuration("60m")
+	dur, _ := time.ParseDuration("30s")
 	for {
-		paypalClient.UpdateToken()
 		time.Sleep(dur)
+		paypalClient.UpdateToken()
 	}
 }
 
 func (paypalClient *PaypalClientImpl) UpdateToken() es.Error {
-	token, err := paypalClient.paypalClient.GetAccessToken()
+	_, err := paypalClient.PaypalClient.GetAccessToken()
+	fmt.Println("New Token: " + paypalClient.AccessToken())
 	if err != nil {
 		return es.NewError("ABHh56", "UpdateToken_"+err.Error(), nil)
 	}
-	paypalClient.AccessToken = token.Token
 	return nil
 }
 
@@ -58,7 +61,7 @@ func (paypalClient PaypalClientImpl) IsSandbox() bool {
 }
 
 func (paypalClient PaypalClientImpl) GetOrder(orderId string) (*paypal.Order, es.Error) {
-	order, err := paypalClient.paypalClient.GetOrder(orderId)
+	order, err := paypalClient.PaypalClient.GetOrder(orderId)
 	if err != nil {
 		return order, es.NewError("as7oXs", "GetOrder_"+err.Error(), nil)
 	}
@@ -72,13 +75,13 @@ func (paypalClient PaypalClientImpl) CreateOrder(referenceId string, price strin
 	payerName := paypal.CreateOrderPayerName{GivenName: buyerFirstName, Surname: buyerLastName}
 	payer := paypal.CreateOrderPayer{Name: &payerName, EmailAddress: buyerEmail}
 	appContext := paypal.ApplicationContext{UserAction: "PAY_NOW", BrandName: brandName, ReturnURL: returnUrl, CancelURL: cancelUrl}
-	order, err := paypalClient.paypalClient.CreateOrder(intent, purchaseUnits, &payer, &appContext)
+	order, err := paypalClient.PaypalClient.CreateOrder(intent, purchaseUnits, &payer, &appContext)
 	return order, es.NewError("Q2Z6ju", "CreateOrder_"+err.Error(), nil)
 }
 
 func (paypalClient PaypalClientImpl) CaptureOrder(orderId string) (*paypal.CaptureOrderResponse, es.Error) {
 	log.Printf("Capture order with id: %s", orderId)
-	resp, err := paypalClient.paypalClient.CaptureOrder(orderId, paypal.CaptureOrderRequest{})
+	resp, err := paypalClient.PaypalClient.CaptureOrder(orderId, paypal.CaptureOrderRequest{})
 	if err != nil {
 		return resp, es.NewError("MHRHfj", "CaptureOrder_"+err.Error(), nil)
 	}
@@ -86,7 +89,7 @@ func (paypalClient PaypalClientImpl) CaptureOrder(orderId string) (*paypal.Captu
 }
 
 func (paypalClient PaypalClientImpl) GetAccessToken() string {
-	return paypalClient.AccessToken
+	return paypalClient.PaypalClient.Token.Token
 }
 
 func (paypalClient PaypalClientImpl) CreateProduct(productName string, productType string) (paypal_api_data.CreateProductResponse, es.Error) {
@@ -97,7 +100,7 @@ func (paypalClient PaypalClientImpl) CreateProduct(productName string, productTy
 		Category:    "SOFTWARE",
 	}
 
-	response, err := sendRequest("POST", paypalClient.ApiBase+"/v1/catalogs/products", createProductReq, paypalClient.AccessToken)
+	response, err := sendRequest("POST", paypalClient.ApiBase+"/v1/catalogs/products", createProductReq, paypalClient.AccessToken())
 	if err != nil {
 		return paypal_api_data.CreateProductResponse{}, es.NewError("3XUvQb", "CreateProduct_", err)
 	}
@@ -129,7 +132,7 @@ func (paypalClient PaypalClientImpl) CreateBillingPlan(productId string, pricePe
 		Status:      "ACTIVE",
 	}
 
-	response, err := sendRequest("POST", paypalClient.ApiBase+"/v1/billing/plans", createPlanRequest, paypalClient.AccessToken)
+	response, err := sendRequest("POST", paypalClient.ApiBase+"/v1/billing/plans", createPlanRequest, paypalClient.AccessToken())
 	if err != nil {
 		return paypal_api_data.CreateBillingPlanResponse{}, es.NewError("oZwLmv", "CreateBillingPlan_", err)
 	}
@@ -143,7 +146,7 @@ func (paypalClient PaypalClientImpl) CreateBillingPlan(productId string, pricePe
 
 func (paypalClient PaypalClientImpl) CreateSubscription(planId string) (paypal_api_data.CreateSubscriptionResponse, es.Error) {
 	createSubRequest := paypal_api_data.CreateSubscriptionRequestRequiredOnly{PlanId: planId}
-	response, err := sendRequest("POST", paypalClient.ApiBase+"/v1/billing/subscriptions", createSubRequest, paypalClient.AccessToken)
+	response, err := sendRequest("POST", paypalClient.ApiBase+"/v1/billing/subscriptions", createSubRequest, paypalClient.AccessToken())
 	if err != nil {
 		return paypal_api_data.CreateSubscriptionResponse{}, es.NewError("dAxHC9", "CreateSubscription_", err)
 	}
@@ -157,7 +160,7 @@ func (paypalClient PaypalClientImpl) CreateSubscription(planId string) (paypal_a
 
 func (paypalClient PaypalClientImpl) CancelSubscription(subscriptionId string) es.Error {
 	cancelRequest := paypal_api_data.RequestCancelSubscription{Reason: "Not satisfied with the service"}
-	response, err := sendRequest("POST", paypalClient.ApiBase+"/v1/billing/subscriptions/"+subscriptionId+"/cancel", cancelRequest, paypalClient.AccessToken)
+	response, err := sendRequest("POST", paypalClient.ApiBase+"/v1/billing/subscriptions/"+subscriptionId+"/cancel", cancelRequest, paypalClient.AccessToken())
 	if err != nil {
 		return es.NewError("GDD0Xg", "CancelSubscription_", err)
 	}
@@ -170,7 +173,7 @@ func (paypalClient PaypalClientImpl) CancelSubscription(subscriptionId string) e
 }
 
 func (paypalClient PaypalClientImpl) ShowSubscriptionDetails(subscriptionId string) (paypal_api_data.ShowSubscriptionDetailsResponse, es.Error) {
-	response, err := sendRequest("GET", paypalClient.ApiBase+"/v1/billing/subscriptions/"+subscriptionId, nil, paypalClient.AccessToken)
+	response, err := sendRequest("GET", paypalClient.ApiBase+"/v1/billing/subscriptions/"+subscriptionId, nil, paypalClient.AccessToken())
 	if err != nil {
 		return paypal_api_data.ShowSubscriptionDetailsResponse{}, es.NewError("f93ff0", "ShowSubscriptionDetails_", err)
 	}
@@ -185,7 +188,7 @@ func (paypalClient PaypalClientImpl) ShowSubscriptionDetails(subscriptionId stri
 
 func (paypalClient PaypalClientImpl) CaptureSubscription(subscriptionId string, amount string) es.Error {
 	requestBody := paypal_api_data.CaptureSubscriptionRequest{}
-	response, err := sendRequest("POST", paypalClient.ApiBase+"/v1/billing/subscriptions/"+subscriptionId+"/capture", requestBody, paypalClient.AccessToken)
+	response, err := sendRequest("POST", paypalClient.ApiBase+"/v1/billing/subscriptions/"+subscriptionId+"/capture", requestBody, paypalClient.AccessToken())
 	if err != nil {
 		return es.NewError("yX93IT", "CaptureSubscription_", err)
 	}
@@ -196,7 +199,7 @@ func (paypalClient PaypalClientImpl) CaptureSubscription(subscriptionId string, 
 }
 
 func (paypalClient PaypalClientImpl) GetSubscriptionTransactions(subscriptionId string, startTime string, endTime string) (paypal_api_data.GetSubscriptionTransactionsResponse, es.Error) {
-	response, err := sendRequest("GET", paypalClient.ApiBase+"/v1/billing/subscriptions/"+subscriptionId+"/transactions?start_time="+startTime+"&end_time="+endTime, nil, paypalClient.AccessToken)
+	response, err := sendRequest("GET", paypalClient.ApiBase+"/v1/billing/subscriptions/"+subscriptionId+"/transactions?start_time="+startTime+"&end_time="+endTime, nil, paypalClient.AccessToken())
 	if err != nil {
 		return paypal_api_data.GetSubscriptionTransactionsResponse{}, es.NewError("LIpk2W", "GetSubscriptionTransactions_", err)
 	}
